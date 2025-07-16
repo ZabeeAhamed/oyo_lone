@@ -1,0 +1,54 @@
+{% extends "utills/base.html" %}
+{% block start %}
+<div class="container mt-5">
+  <div class="card p-4 shadow">
+    <h2 class="mb-3">{{ hotel.hotel_name }}</h2>
+    
+    <div class="mb-3">
+      <span class="badge bg-danger">₹{{ hotel.hotel_price }}</span>
+      <span class="badge bg-success">Offer ₹{{ hotel.hotel_offer_price }}</span>
+    </div>
+
+    <p class="text-muted"><i class="bi bi-geo-alt"></i> {{ hotel.hotel_location }}</p>
+
+    <!-- Amenities -->
+    <div class="mb-3">
+      <span class="badge bg-primary">Swimming Pool</span>
+      <span class="badge bg-primary">AC</span>
+      <!-- You can loop amenities here dynamically if needed -->
+    </div>
+
+    <!-- Description -->
+    <div class="mb-4">{{ hotel.hotel_description|safe }}</div>
+
+    <!-- Images -->
+    <div class="row g-3 mb-4">
+      {% for image in hotel.hotel_images.all %}
+        <div class="col-3">
+          <img src="/media/{{ image.image }}" class="img-fluid rounded shadow-sm">
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Booking Form -->
+    <form method="POST">
+      {% csrf_token %}
+      {% include 'utills/alerts.html' %}
+
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">Start Date</label>
+          <input type="date" name="start_date" class="form-control" required>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">End Date</label>
+          <input type="date" name="end_date" class="form-control" required>
+        </div>
+        <div class="col-md-4 d-flex align-items-end">
+          <button type="submit" class="btn btn-danger w-100">Book Now</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

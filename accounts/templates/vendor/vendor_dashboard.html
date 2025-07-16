@@ -1,0 +1,52 @@
+{% extends "utills/vendor_base.html" %}
+{% block start %}
+
+<div class="container mt-5 pt-4">
+  <div class="text-center mb-4">
+    <h2 class="mb-4">Your Listed Hotels</h2>
+  </div>
+
+  <!-- Hotel Cards -->
+  <div class="row g-4">
+    {% for hotel in hotels %}
+    <div class="col-md-6 col-lg-4 col-xl-3">
+      <div class="card h-100 shadow-sm border-0">
+        <a href="{% url 'upload_images' hotel.hotel_slug %}" class="text-decoration-none text-dark">
+          {% if hotel.hotel_images.first %}
+          <img src="/media/{{ hotel.hotel_images.first.image }}" class="card-img-top" alt="{{ hotel.hotel_name }}" style="height: 180px; object-fit: cover;">
+          {% else %}
+          <img src="https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg" class="card-img-top" alt="Default image" style="height: 180px; object-fit: cover;">
+          {% endif %}
+        </a>
+
+        <div class="card-body">
+          <a href="{% url 'upload_images' hotel.hotel_slug %}" class="text-decoration-none text-dark">
+            <h5 class="card-title">{{ hotel.hotel_name }}</h5>
+          </a>
+          <p class="card-text text-muted" style="font-size: 14px;">
+            {{ hotel.hotel_description|truncatechars:100 }}
+          </p>
+
+          <!-- Optional Tag Badges -->
+          
+          <!-- Action Buttons -->
+          <div class="d-flex justify-content-between">
+            <a href="{% url 'upload_images' hotel.hotel_slug %}" class="btn btn-outline-success btn-sm">Images</a>
+            <a href="{% url 'edit_hotel' hotel.hotel_slug %}" class="btn btn-outline-warning btn-sm">Edit</a>
+            <a href="{% url 'hotel-bookings' hotel.hotel_slug %}" class="btn btn-outline-success btn-sm">Bookings</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Add Hotel Button at Bottom -->
+  <div class="text-center mt-5">
+    <a href="{% url 'add_hotel' %}" class="btn btn-success">
+      <i class="bi bi-plus-circle"></i> Add Hotel
+    </a>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "utills/base.html" %}
+{% block start %}
+
+<div class="container mt-5 pt-5 pb-5">
+  <!-- Search & Filter Section -->
+  <div class="col-md-8 mx-auto mb-4">
+    <form class="row g-2 align-items-end" method="GET">
+      <div class="col-md-6">
+        <input type="text" name="search" class="form-control" placeholder="Search by location or hotel name">
+      </div>
+      <div class="col-md-4">
+        <select class="form-select" name="sort_by">
+          <option value="">Sort by</option>
+          <option value="sort_low">Price: Low to High</option>
+          <option value="sort_high">Price: High to Low</option>
+        </select>
+      </div>
+      <div class="col-md-2 d-grid">
+        <button type="submit" class="btn btn-warning">Search</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Hotel Cards -->
+  <div class="row">
+    {% for hotel in hotels %}
+    <div class="col-md-4 col-sm-6 mb-4">
+      <div class="card h-100 shadow-sm border-0">
+        <a href="{% url 'hotel_details' hotel.hotel_slug %}" class="text-decoration-none text-dark">
+          {% if hotel.hotel_images.first %}
+          <img src="/media/{{ hotel.hotel_images.first.image }}" class="card-img-top" alt="{{ hotel.hotel_name }}" style="height: 200px; object-fit: cover;">
+          {% else %}
+          <img src="https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg" class="card-img-top" alt="Default image" style="height: 200px; object-fit: cover;">
+          {% endif %}
+
+          <div class="card-body">
+            <h5 class="card-title">{{ hotel.hotel_name }}</h5>
+            <p class="card-text text-muted">{{ hotel.hotel_location }}</p>
+            <div class="mb-2">
+              <span class="badge bg-danger">₹{{ hotel.hotel_price }}</span>
+              <span class="badge bg-success">Offer: ₹{{ hotel.hotel_offer_price }}</span>
+            </div>
+            <div class="d-flex flex-wrap gap-1">
+              <span class="badge bg-primary">Swimming Pool</span>
+              <span class="badge bg-primary">AC</span>
+              <!-- Add more amenities dynamically if needed -->
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}
